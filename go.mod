@@ -1,6 +1,6 @@
 module github.com/SandQuattro/go-bip32
 
-go 1.24.3
+go 1.24.0
 
 require (
 	github.com/FactomProject/btcutilecc v0.0.0-20130527213604-d3a63a5752ec

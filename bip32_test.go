@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/SandQuattro/go-bip32"
+	"github.com/sandquattro/go-bip32"
 	"github.com/stretchr/testify/assert"
 )
 

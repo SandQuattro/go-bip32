@@ -68,7 +68,7 @@ func (key *Key) NewChildKey(childIdx uint32) (*Key, error) {
 
 	// Fail early if trying to create hardned child from public key
 	if !key.IsPrivate && hardenedChild {
-		return nil, errors.New("Can't create hardened child for public key")
+		return nil, errors.New("can't create hardened child for public key")
 	}
 
 	// Get intermediary to create key and chaincode from

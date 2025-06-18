@@ -6,17 +6,16 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/FactomProject/basen"
-	"github.com/FactomProject/btcutilecc"
-	"golang.org/x/crypto/ripemd160"
-	"io"
 	"math/big"
+
+	btcutil "github.com/FactomProject/btcutilecc"
+	"github.com/mr-tron/base58"
+	"golang.org/x/crypto/ripemd160"
 )
 
 var (
-	curve                 = btcutil.Secp256k1()
-	curveParams           = curve.Params()
-	BitcoinBase58Encoding = basen.NewEncoding("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
+	curve       = btcutil.Secp256k1()
+	curveParams = curve.Params()
 )
 
 //
@@ -35,7 +34,7 @@ func hashDoubleSha256(data []byte) []byte {
 
 func hashRipeMD160(data []byte) []byte {
 	hasher := ripemd160.New()
-	io.WriteString(hasher, string(data))
+	hasher.Write(data)
 	return hasher.Sum(nil)
 }
 
@@ -57,7 +56,7 @@ func addChecksumToBytes(data []byte) []byte {
 }
 
 func base58Encode(data []byte) []byte {
-	return []byte(BitcoinBase58Encoding.EncodeToString(data))
+	return []byte(base58.Encode(data))
 }
 
 // Keys
@@ -134,7 +133,7 @@ func validatePrivateKey(key []byte) error {
 	if fmt.Sprintf("%x", key) == "0000000000000000000000000000000000000000000000000000000000000000" || //if the key is zero
 		bytes.Compare(key, curveParams.N.Bytes()) >= 0 || //or is outside of the curve
 		len(key) != 32 { //or is too short
-		return errors.New("Invalid seed")
+		return errors.New("invalid seed")
 	}
 
 	return nil
@@ -144,15 +143,13 @@ func validateChildPublicKey(key []byte) error {
 	x, y := expandPublicKey(key)
 
 	if x.Sign() == 0 || y.Sign() == 0 {
-		return errors.New("Invalid public key")
+		return errors.New("invalid public key")
 	}
 
 	return nil
 }
 
-//
 // Numerical
-//
 func uint32Bytes(i uint32) []byte {
 	bytes := make([]byte, 4)
 	binary.BigEndian.PutUint32(bytes, i)

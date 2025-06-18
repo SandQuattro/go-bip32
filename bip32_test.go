@@ -2,9 +2,10 @@ package bip32_test
 
 import (
 	"encoding/hex"
-	"github.com/FactomProject/go-bip32"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/SandQuattro/go-bip32"
+	"github.com/stretchr/testify/assert"
 )
 
 type testMasterKey struct {
